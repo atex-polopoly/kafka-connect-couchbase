@@ -68,6 +68,11 @@
           <enabled>true</enabled>
         </snapshots>
       </repository>
+      <repository>
+        <id>confluent</id>
+        <name>Confluent</name>
+        <url>${confluent.maven.repo}</url>
+      </repository>
     </repositories>
 
     <dependencies>

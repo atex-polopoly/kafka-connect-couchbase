@@ -53,6 +53,9 @@ public class CouchbaseSourceConnectorConfig extends AbstractConfig {
     public static final String DATABASE_GROUP = "Database";
     public static final String CONNECTOR_GROUP = "Connector";
 
+    public static final String DCP_MESSAGE_CONVERTER_CLASS = "dcp.message.converter.class";
+    public static final String EVENT_FILTER_CLASS = "event.filter.class";
+
     static ConfigDef config = baseConfigDef();
 
     public CouchbaseSourceConnectorConfig(Map<String, String> props) {
