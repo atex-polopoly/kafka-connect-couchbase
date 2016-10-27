@@ -20,7 +20,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.couchbase.client</groupId>
+    <groupId>com.atex</groupId>
     <artifactId>kafka-connect-couchbase</artifactId>
     <packaging>jar</packaging>
     <version>3.0.0-DP4</version>
@@ -43,16 +43,16 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git://github.com/couchbase/kafka-connect-couchbase.git</connection>
-        <developerConnection>scm:git:git@github.com:couchbase/kafka-connect-couchbase.git</developerConnection>
-        <url>https://github.com/couchbase/kafka-connect-couchbase</url>
+        <connection>scm:git:git://github.com/atex-polopoly/kafka-connect-couchbase.git</connection>
+        <developerConnection>scm:git:git@github.com:atex-polopoly/kafka-connect-couchbase.git</developerConnection>
+        <url>https://github.com/atex-polopoly/kafka-connect-couchbase</url>
         <tag>HEAD</tag>
     </scm>
 
     <properties>
-        <java-compat.version>1.6</java-compat.version>
+        <java-compat.version>1.8</java-compat.version>
         <confluent.version>3.0.1</confluent.version>
-        <kafka.version>0.10.0.1</kafka.version>
+        <kafka.version>0.10.1.0</kafka.version>
         <junit.version>4.12</junit.version>
         <dcp-client.version>0.6.0</dcp-client.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -60,11 +60,14 @@
     </properties>
 
     <repositories>
-        <repository>
-            <id>confluent</id>
-            <name>Confluent</name>
-            <url>${confluent.maven.repo}</url>
-        </repository>
+      <repository>
+        <id>polopoly-testing</id>
+        <name>polopoly testing</name>
+        <url>http://maven.polopoly.ninja:8081/nexus/content/repositories/polopoly-testing</url>
+        <snapshots>
+          <enabled>true</enabled>
+        </snapshots>
+      </repository>
     </repositories>
 
     <dependencies>
