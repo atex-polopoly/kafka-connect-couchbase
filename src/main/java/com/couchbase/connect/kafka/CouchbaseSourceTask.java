@@ -79,8 +79,8 @@ public class CouchbaseSourceTask extends SourceTask {
             throw new ConnectException("Couldn't start CouchbaseSourceTask due to configuration error", e);
         }
 
-        filter = createFilter(config.getString(CouchbaseSourceConnectorConfig.EVENT_FILTER_CLASS));
-        converter = createConverter(config.getString(CouchbaseSourceConnectorConfig.DCP_MESSAGE_CONVERTER_CLASS));
+        filter = createFilter(config.getString(CouchbaseSourceConnectorConfig.EVENT_FILTER_CLASS_CONFIG));
+        converter = createConverter(config.getString(CouchbaseSourceConnectorConfig.DCP_MESSAGE_CONVERTER_CLASS_CONFIG));
 
         topic = config.getString(CouchbaseSourceConnectorConfig.TOPIC_NAME_CONFIG);
         bucket = config.getString(CouchbaseSourceConnectorConfig.CONNECTION_BUCKET_CONFIG);
