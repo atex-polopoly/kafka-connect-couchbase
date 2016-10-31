@@ -1,7 +1,7 @@
 package com.couchbase.connect.kafka.filter;
 
 
-import com.couchbase.connect.kafka.dcp.Event;
+import com.couchbase.client.deps.io.netty.buffer.ByteBuf;
 
 /**
  * General interface to select Couchbase events, which has to be sent to Kafka.
@@ -11,11 +11,11 @@ import com.couchbase.connect.kafka.dcp.Event;
 public interface Filter {
 
     /**
-     * Decides whether <code>event</code> should be sent to Kafka.
+     * Decides whether <code>message</code> should be sent to Kafka.
      *
-     * @param event DCP event object from Couchbase.
+     * @param message DCP event message from Couchbase.
      * @return true if event should be sent to Kafka.
      */
-    boolean pass(Event event);
+    boolean pass(ByteBuf message);
 
 }

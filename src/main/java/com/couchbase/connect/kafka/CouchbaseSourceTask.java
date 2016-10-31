@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 Couchbase, Inc.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -80,12 +80,14 @@ public class CouchbaseSourceTask extends SourceTask {
         }
 
         filter = createFilter(config.getString(CouchbaseSourceConnectorConfig.EVENT_FILTER_CLASS_CONFIG));
-        converter = createConverter(config.getString(CouchbaseSourceConnectorConfig.DCP_MESSAGE_CONVERTER_CLASS_CONFIG));
+        converter = createConverter(
+                config.getString(CouchbaseSourceConnectorConfig.DCP_MESSAGE_CONVERTER_CLASS_CONFIG));
 
         topic = config.getString(CouchbaseSourceConnectorConfig.TOPIC_NAME_CONFIG);
         bucket = config.getString(CouchbaseSourceConnectorConfig.CONNECTION_BUCKET_CONFIG);
         String password = config.getString(CouchbaseSourceConnectorConfig.CONNECTION_PASSWORD_CONFIG);
-        List<String> clusterAddress = config.getListWorkaround(CouchbaseSourceConnectorConfig.CONNECTION_CLUSTER_ADDRESS_CONFIG);
+        List<String> clusterAddress = config
+                .getListWorkaround(CouchbaseSourceConnectorConfig.CONNECTION_CLUSTER_ADDRESS_CONFIG);
         boolean useSnapshots = config.getBoolean(CouchbaseSourceConnectorConfig.USE_SNAPSHOTS_CONFIG);
 
         long connectionTimeout = config.getLong(CouchbaseSourceConnectorConfig.CONNECTION_TIMEOUT_MS_CONFIG);
@@ -144,15 +146,16 @@ public class CouchbaseSourceTask extends SourceTask {
     }
 
     @Override
-    public List<SourceRecord> poll() throws InterruptedException {
+    public List<SourceRecord> poll()
+            throws InterruptedException {
         List<SourceRecord> results = new LinkedList<SourceRecord>();
 
         while (running) {
             Event event = queue.poll(100, TimeUnit.MILLISECONDS);
             if (event != null) {
 
-                if (filter == null || filter.pass(event)) {
-                    for (ByteBuf message : event) {
+                for (ByteBuf message : event) {
+                    if (filter == null || filter.pass(message)) {
                         SourceRecord record = convert(message);
                         if (record != null) {
                             results.add(record);
