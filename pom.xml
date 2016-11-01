@@ -178,4 +178,12 @@
             </properties>
         </profile>
     </profiles>
+
+  <distributionManagement>
+    <repository>
+      <id>polopoly-testing</id>
+      <name>Polopoly Testing</name>
+      <url>http://maven.polopoly.ninja:8081/nexus/content/repositories/polopoly-testing</url>
+    </repository>
+  </distributionManagement>
 </project>
