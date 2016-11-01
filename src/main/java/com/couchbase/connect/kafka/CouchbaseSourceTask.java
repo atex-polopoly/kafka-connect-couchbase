@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 Couchbase, Inc.
- * <p>
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,6 @@ package com.couchbase.connect.kafka;
 import com.couchbase.client.dcp.state.PartitionState;
 import com.couchbase.client.dcp.state.SessionState;
 import com.couchbase.client.deps.io.netty.buffer.ByteBuf;
-import com.couchbase.client.deps.io.netty.util.CharsetUtil;
 import com.couchbase.connect.kafka.converter.Converter;
 import com.couchbase.connect.kafka.dcp.Event;
 import com.couchbase.connect.kafka.filter.Filter;
@@ -33,6 +32,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import org.apache.kafka.common.config.ConfigException;
+import org.apache.kafka.common.utils.Utils;
 import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
@@ -53,10 +53,6 @@ public class CouchbaseSourceTask extends SourceTask {
     private volatile boolean running;
     private Filter filter;
     private Converter converter;
-
-    private static String bufToString(ByteBuf buf) {
-        return new String(bufToBytes(buf), CharsetUtil.UTF_8);
-    }
 
     private static byte[] bufToBytes(ByteBuf buf) {
         byte[] bytes;
@@ -86,8 +82,7 @@ public class CouchbaseSourceTask extends SourceTask {
         topic = config.getString(CouchbaseSourceConnectorConfig.TOPIC_NAME_CONFIG);
         bucket = config.getString(CouchbaseSourceConnectorConfig.CONNECTION_BUCKET_CONFIG);
         String password = config.getString(CouchbaseSourceConnectorConfig.CONNECTION_PASSWORD_CONFIG);
-        List<String> clusterAddress = config
-                .getListWorkaround(CouchbaseSourceConnectorConfig.CONNECTION_CLUSTER_ADDRESS_CONFIG);
+        List<String> clusterAddress = config.getListWorkaround(CouchbaseSourceConnectorConfig.CONNECTION_CLUSTER_ADDRESS_CONFIG);
         boolean useSnapshots = config.getBoolean(CouchbaseSourceConnectorConfig.USE_SNAPSHOTS_CONFIG);
 
         long connectionTimeout = config.getLong(CouchbaseSourceConnectorConfig.CONNECTION_TIMEOUT_MS_CONFIG);
@@ -128,8 +123,8 @@ public class CouchbaseSourceTask extends SourceTask {
 
     private Converter createConverter(final String className) {
         try {
-            return (Converter) Class.forName(className).newInstance();
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            return Utils.newInstance(className, Converter.class);
+        } catch (ClassNotFoundException e) {
             throw new ConnectException("Couldn't create message converter", e);
         }
     }
@@ -137,8 +132,8 @@ public class CouchbaseSourceTask extends SourceTask {
     private Filter createFilter(final String className) {
         if (className != null && !"".equals(className)) {
             try {
-                return (Filter) Class.forName(className).newInstance();
-            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+                return Utils.newInstance(className, Filter.class);
+            } catch (ClassNotFoundException e) {
                 throw new ConnectException("Couldn't create filter in CouchbaseSourceTask due to an error", e);
             }
         }
